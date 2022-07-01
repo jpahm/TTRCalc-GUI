@@ -1,0 +1,74 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib" x:Class="TTRCalc_GUI.MainWindow"
+        mc:Ignorable="d"
+        Title="Sysroot's TTR Suit Point Calculator" Height="355" Width="635" ResizeMode="CanMinimize" Topmost="True" SizeToContent="Height" Background="#FF3C3C3C">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="39*"/>
+            <ColumnDefinition Width="35*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="0,0,2,0" BorderBrush="#FFA4A4A4">
+            <StackPanel Margin="7,0,7,0">
+                <Label Content="Facility Type:" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" Margin="0,10,0,5" Foreground="#FFECECEC"/>
+                <WrapPanel Margin="10,0,10,10" HorizontalAlignment="Center">
+                    <RadioButton x:Name="SellbotButton" GroupName="FacilityRadioGroup" FontSize="24" HorizontalAlignment="Left" VerticalContentAlignment="Center" IsChecked="True" Checked="FacilitySelected">
+                        <WrapPanel>
+                            <Label VerticalAlignment="Center" Foreground="#FFE2E2E2">Sellbot</Label>
+                            <Image Source="/Resources/Sellbot.png" Height="63" Width="45" Margin="10,0,0,0"/>
+                        </WrapPanel>
+                    </RadioButton>
+                </WrapPanel>
+                <WrapPanel Margin="10,0,10,10" HorizontalAlignment="Center">
+                    <RadioButton x:Name="CashbotButton" GroupName="FacilityRadioGroup" FontSize="24" HorizontalAlignment="Left" VerticalContentAlignment="Center" Checked="FacilitySelected">
+                        <WrapPanel>
+                            <Label VerticalAlignment="Center" Foreground="#FFE2E2E2">Cashbot</Label>
+                            <Image Source="/Resources/Cashbot.png" Height="63" Width="45" Margin="4,0,0,0"/>
+                        </WrapPanel>
+                    </RadioButton>
+                </WrapPanel>
+                <WrapPanel Margin="10,0,10,10" HorizontalAlignment="Center">
+                    <RadioButton x:Name="LawbotButton" GroupName="FacilityRadioGroup" FontSize="24" HorizontalAlignment="Left" VerticalContentAlignment="Center" Checked="FacilitySelected">
+                        <WrapPanel>
+                            <Label VerticalAlignment="Center" Foreground="#FFE2E2E2">Lawbot</Label>
+                            <Image Source="/Resources/Lawbot.png" Height="63" Width="45" Margin="10,0,0,0"/>
+                        </WrapPanel>
+                    </RadioButton>
+                </WrapPanel>
+                <WrapPanel Margin="10,0,10,10" HorizontalAlignment="Center">
+                    <RadioButton x:Name="BossbotButton" GroupName="FacilityRadioGroup" FontSize="24" HorizontalAlignment="Left" VerticalContentAlignment="Center" Foreground="#FFE2E2E2" Checked="FacilitySelected">
+                        <WrapPanel>
+                            <Label VerticalAlignment="Center" Foreground="#FFE2E2E2">Bossbot</Label>
+                            <Image Source="/Resources/Bossbot.png" Height="63" Width="45" Margin="5,0,0,0"/>
+                        </WrapPanel>
+                    </RadioButton>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+        <Grid Margin="37,47,24,256" Grid.Column="1">
+            <TextBlock x:Name="NeededPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you need?" TextWrapping="Wrap" FontWeight="Bold"/>
+        </Grid>
+        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
+        <Grid Margin="37,147,24,155" Grid.Column="1">
+            <TextBlock x:Name="CurrentPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you have?" TextWrapping="Wrap" FontWeight="Bold"/>
+        </Grid>
+        <TextBox x:Name="CurrentPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
+        <Button x:Name="CalculateButton" Grid.Column="1" Content="Calculate" HorizontalAlignment="Left" Height="55" Margin="37,244,0,0" VerticalAlignment="Top" Width="149" IsDefault="True" FontSize="22" FontWeight="Normal" Click="CalculateButton_Clicked"/>
+        <Label Grid.Column="2" Content="You should do:" HorizontalAlignment="Center" Margin="5,32,0,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontSize="20"/>
+        <ListView x:Name="OutputList" Grid.Column="2" Margin="22,74,17,0" d:ItemsSource="{d:SampleData ItemCount=5}" Height="250" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFE2E2E2" IsEnabled="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding Count}" Width="30"/>
+                    <GridViewColumn Header="Facility Type" DisplayMemberBinding="{Binding FacilityName}" Width="130"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
