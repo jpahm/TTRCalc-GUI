@@ -23,7 +23,7 @@ namespace TTRCalc_GUI
         private bool ShortsPreferred;
 
         // Point values associated w/ facilities
-        private static Dictionary<FacilityType, (string, uint, double)[]> FacilityValues = new Dictionary<FacilityType, (string, uint, double)[]>()
+        private Dictionary<FacilityType, (string, uint, double)[]> FacilityValues = new Dictionary<FacilityType, (string, uint, double)[]>()
         {
             {
                 // Medium factory not included by default
