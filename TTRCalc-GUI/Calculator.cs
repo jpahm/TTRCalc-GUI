@@ -20,6 +20,7 @@ namespace TTRCalc_GUI
     {
         private FacilityType SelectedFacility;
         private bool IncludeMediumFactory;
+        private bool ShortsPreferred;
 
         // Point values associated w/ facilities
         private static Dictionary<FacilityType, (string, uint, double)[]> FacilityValues = new Dictionary<FacilityType, (string, uint, double)[]>()
@@ -59,10 +60,11 @@ namespace TTRCalc_GUI
                 }
             }
         };
-        public Calculator(FacilityType type, bool includeMediumFactory)
+        public Calculator(FacilityType type, bool includeMediumFactory, bool shortsPreferred)
         {
             SelectedFacility = type;
             IncludeMediumFactory = includeMediumFactory;
+            ShortsPreferred = shortsPreferred;
         }
 
         // Function for calculating and listing the suggested route
@@ -70,8 +72,14 @@ namespace TTRCalc_GUI
         {
             (string, uint, double)[] PointSources = FacilityValues[SelectedFacility];
 
-            if (SelectedFacility == FacilityType.Sellbot && IncludeMediumFactory)
-                PointSources = new (string, uint, double)[] { PointSources[0], ("Medium", 584, 1.3), PointSources[1] };
+            if (SelectedFacility == FacilityType.Sellbot)
+            {
+                if (IncludeMediumFactory)
+                    PointSources = new (string, uint, double)[] { PointSources[0], ("Medium", 584, 1.3), PointSources[1] };
+                // Adjust longs to be considered more efficient if the user doesn't prefer doing shorts
+                if (!ShortsPreferred)
+                    PointSources[0] = ("Long", 776, 1.5);
+            }
 
             uint[] SourceCounts = CalculateMostEfficientRoute(PointSources, PointsNeeded);
 

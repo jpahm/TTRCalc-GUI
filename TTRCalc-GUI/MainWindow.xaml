@@ -52,14 +52,14 @@
                 </WrapPanel>
             </StackPanel>
         </Border>
-        <Grid Margin="37,59,24,244" Grid.Column="1">
+        <Grid Margin="37,81,24,222" Grid.Column="1">
             <TextBlock x:Name="NeededPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you need?" TextWrapping="Wrap" FontWeight="Bold"/>
         </Grid>
-        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
+        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
         <Grid Margin="37,147,24,155" Grid.Column="1">
             <TextBlock x:Name="CurrentPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you have?" TextWrapping="Wrap" FontWeight="Bold"/>
         </Grid>
-        <TextBox x:Name="CurrentPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
+        <TextBox x:Name="CurrentPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1" Text="0"/>
         <Button x:Name="CalculateButton" Grid.Column="1" Content="Calculate" HorizontalAlignment="Left" Height="55" Margin="37,244,0,0" VerticalAlignment="Top" Width="149" IsDefault="True" FontSize="22" FontWeight="Normal" Click="CalculateButton_Clicked"/>
         <Label Grid.Column="2" Content="You should do:" HorizontalAlignment="Center" Margin="5,32,0,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontSize="20"/>
         <ListView x:Name="OutputList" Grid.Column="2" Margin="22,74,17,0" d:ItemsSource="{d:SampleData ItemCount=5}" Height="250" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFE2E2E2" IsEnabled="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -70,6 +70,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <CheckBox x:Name="MediumFactoryBox" Grid.Column="1" Content="Medium factories allowed?" HorizontalAlignment="Left" Height="19" Margin="37,20,0,0" VerticalAlignment="Top" Width="177" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible"/>
+        <CheckBox x:Name="MediumFactoryBox" Grid.Column="1" Content="Medium factories allowed?" HorizontalAlignment="Left" Height="19" Margin="37,21,0,0" VerticalAlignment="Top" Width="177" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible"/>
+        <CheckBox x:Name="ShortsPreferredBox" Grid.Column="1" Content="Shorts preferred?" HorizontalAlignment="Left" Height="19" Margin="37,50,0,0" VerticalAlignment="Top" Width="177" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible"/>
     </Grid>
 </Window>
