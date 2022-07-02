@@ -19,24 +19,26 @@ namespace TTRCalc_GUI
     class Calculator
     {
         private FacilityType SelectedFacility;
+        private bool IncludeMediumFactory;
 
         // Point values associated w/ facilities
         private static Dictionary<FacilityType, (string, uint, double)[]> FacilityValues = new Dictionary<FacilityType, (string, uint, double)[]>()
         {
             {
+                // Medium factory not included by default
                 FacilityType.Sellbot,
                 new (string, uint, double)[] {
                     ("Long", 776, 1.5),
-                    //("Medium", 584, 2.0), Commenting this out for now because who does medium factory runs lol
                     ("Short", 480, 1.0)
                 }
             },
             {
+                // Note, cashbot uses avg. values since there is a range of possible points rewarded
                 FacilityType.Cashbot,
                 new (string, uint, double)[] {
-                    ("Bullion Mint", 1202, 2.0),
-                    ("Dollar Mint", 679, 1.5),
-                    ("Coin Mint", 356, 1.0)
+                    ("Bullion Mint", 1349, 2.0),
+                    ("Dollar Mint", 842, 1.5),
+                    ("Coin Mint", 450, 1.0)
                 }
             },
             {
@@ -57,15 +59,19 @@ namespace TTRCalc_GUI
                 }
             }
         };
-        public Calculator(FacilityType type)
+        public Calculator(FacilityType type, bool includeMediumFactory)
         {
-                SelectedFacility = type;
+            SelectedFacility = type;
+            IncludeMediumFactory = includeMediumFactory;
         }
 
         // Function for calculating and listing the suggested route
         public List<FacilityItem> CalculateList(uint PointsNeeded)
         {
             (string, uint, double)[] PointSources = FacilityValues[SelectedFacility];
+
+            if (SelectedFacility == FacilityType.Sellbot && IncludeMediumFactory)
+                PointSources = new (string, uint, double)[] { PointSources[0], ("Medium", 584, 1.3), PointSources[1] };
 
             uint[] SourceCounts = CalculateMostEfficientRoute(PointSources, PointsNeeded);
 

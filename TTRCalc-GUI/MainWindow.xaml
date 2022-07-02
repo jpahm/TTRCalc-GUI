@@ -52,10 +52,10 @@
                 </WrapPanel>
             </StackPanel>
         </Border>
-        <Grid Margin="37,47,24,256" Grid.Column="1">
+        <Grid Margin="37,59,24,244" Grid.Column="1">
             <TextBlock x:Name="NeededPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you need?" TextWrapping="Wrap" FontWeight="Bold"/>
         </Grid>
-        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
+        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="37,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1"/>
         <Grid Margin="37,147,24,155" Grid.Column="1">
             <TextBlock x:Name="CurrentPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you have?" TextWrapping="Wrap" FontWeight="Bold"/>
         </Grid>
@@ -70,5 +70,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <CheckBox x:Name="MediumFactoryBox" Grid.Column="1" Content="Medium factories allowed?" HorizontalAlignment="Left" Height="19" Margin="37,20,0,0" VerticalAlignment="Top" Width="177" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible"/>
     </Grid>
 </Window>

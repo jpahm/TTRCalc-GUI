@@ -68,6 +68,10 @@ namespace TTRCalc_GUI
             }
             if (NeededPointsBox == null)
                 return;
+            if (SelectedFacility != FacilityType.Sellbot)
+                MediumFactoryBox.Visibility = Visibility.Hidden;
+            else
+                MediumFactoryBox.Visibility = Visibility.Visible;
             string PointType = PointTypes[SelectedFacility];
             NeededPointsBox.Text = "";
             NeededPointsText.Text = $"How many {PointType} do you need?";
@@ -77,7 +81,7 @@ namespace TTRCalc_GUI
 
         private void CalculateButton_Clicked(object sender, RoutedEventArgs e)
         {
-            Calculator calc = new Calculator(SelectedFacility);
+            Calculator calc = new Calculator(SelectedFacility, MediumFactoryBox.IsChecked ?? false);
             uint CurrentPoints;
             uint NeededPoints;
             if (!uint.TryParse(CurrentPointsBox.Text, out CurrentPoints))
