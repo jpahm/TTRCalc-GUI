@@ -28,7 +28,7 @@ namespace TTRCalc_GUI
                 // Medium factory not included by default
                 FacilityType.Sellbot,
                 new (string, uint, double)[] {
-                    ("Long", 776, 1.5),
+                    ("Long", 776, 1.75),
                     ("Short", 480, 1.0)
                 }
             },
