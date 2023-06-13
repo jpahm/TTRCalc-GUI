@@ -95,8 +95,23 @@ namespace TTRCalc_GUI
             if (!uint.TryParse(NeededPointsBox.Text, out NeededPoints))
                 return;
             if (CurrentPoints > NeededPoints)
-                return; 
+                return;
             OutputList.ItemsSource = calc.CalculateList(NeededPoints - CurrentPoints); ;
+        }
+
+        void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ((TextBox)sender).SelectAll();
+        }
+
+        void TextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var TextBox = (TextBox)sender;
+            if (!TextBox.IsKeyboardFocusWithin)
+            {
+                TextBox.Focus();
+                e.Handled = true;
+            }
         }
     }
 }
