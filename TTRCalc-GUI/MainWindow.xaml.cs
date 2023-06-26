@@ -48,6 +48,22 @@ namespace TTRCalc_GUI
             InitializeComponent();
         }
 
+        private void DoCalculation()
+        {
+            if (MediumFactoryBox == null || ShortsPreferredBox == null)
+                return;
+            Calculator calc = new Calculator(SelectedFacility, MediumFactoryBox.IsChecked ?? false, ShortsPreferredBox.IsChecked ?? false);
+            uint CurrentPoints;
+            uint NeededPoints;
+            if (!uint.TryParse(CurrentPointsBox.Text, out CurrentPoints))
+                CurrentPoints = 0;
+            if (!uint.TryParse(NeededPointsBox.Text, out NeededPoints))
+                NeededPoints = 0;
+            if (CurrentPoints > NeededPoints)
+                return;
+            OutputList.ItemsSource = calc.CalculateList(NeededPoints - CurrentPoints);
+        }
+
         private void FacilitySelected(object sender, RoutedEventArgs e)
         {
             RadioButton FacilityButton = (RadioButton)sender;
@@ -85,20 +101,6 @@ namespace TTRCalc_GUI
             CurrentPointsText.Text = $"How many {PointType} do you have?";
         }
 
-        private void CalculateButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            Calculator calc = new Calculator(SelectedFacility, MediumFactoryBox.IsChecked ?? false, ShortsPreferredBox.IsChecked ?? false);
-            uint CurrentPoints;
-            uint NeededPoints;
-            if (!uint.TryParse(CurrentPointsBox.Text, out CurrentPoints))
-                return;
-            if (!uint.TryParse(NeededPointsBox.Text, out NeededPoints))
-                return;
-            if (CurrentPoints > NeededPoints)
-                return;
-            OutputList.ItemsSource = calc.CalculateList(NeededPoints - CurrentPoints); ;
-        }
-
         void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             ((TextBox)sender).SelectAll();
@@ -112,6 +114,16 @@ namespace TTRCalc_GUI
                 TextBox.Focus();
                 e.Handled = true;
             }
+        }
+
+        private void Box_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DoCalculation();
+        }
+
+        private void Box_Clicked(object sender, RoutedEventArgs e)
+        {
+            DoCalculation();
         }
     }
 }

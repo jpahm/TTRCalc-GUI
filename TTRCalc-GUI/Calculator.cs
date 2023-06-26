@@ -97,28 +97,34 @@ namespace TTRCalc_GUI
         // The actual recursive function for calculating the route
         private uint[] CalculateMostEfficientRoute((string, uint, double)[] PointSources, uint PointsNeeded)
         {
+            // Stores how many of each point source we should do
             uint[] SourceCounts = new uint[PointSources.Length];
             uint PointsRemaining = PointsNeeded;
+            // Keep calculating until we don't need any more points
             while (PointsRemaining > 0)
             {
+                // Initialize optimized values to 0
                 double LowestTime = 0;
                 uint BestCount = 0;
                 uint BestSourceIndex = 0;
+                // Look through all possible point sources to find most efficient route
                 for (uint i = 0; i < PointSources.Length; ++i)
                 {
                     var PointSource = PointSources[i];
                     uint Points = PointSource.Item2;
                     double Time = PointSource.Item3;
-                    double FractionNeeded = ((double)PointsRemaining / (double)Points);
-                    uint RoundedFraction = (uint)Math.Floor(FractionNeeded);
-                    uint CountNeeded = Math.Max(RoundedFraction, 1);
-                    double TimeNeeded = Time * CountNeeded;
-                    if (Points * CountNeeded < PointsRemaining)
+                    double FractionNeeded = (double)PointsRemaining / Points;
+                    uint RoundedFraction = (uint)Math.Floor(FractionNeeded); // Ideal amount of runs needed = floor(points remaining / points given)
+                    uint CountNeeded = Math.Max(RoundedFraction, 1); // Always require at least 1 run
+                    double TimeNeeded = Time * CountNeeded; // Total time for N runs = time * N
+                    if (Points * CountNeeded < PointsRemaining) // If we'll still need more points, do a recursive route calculation starting from the current point
                     {
                         uint[] TestCounts = CalculateMostEfficientRoute(PointSources, PointsRemaining - (Points * CountNeeded));
+                        // Add the total time needed to do the calculated route to this route's time
                         for (int j = 0; j < TestCounts.Length; ++j)
                             TimeNeeded += TestCounts[j] * PointSources[j].Item3;
                     }
+                    // If this is the quickest route, set the relevant variables
                     if (TimeNeeded < LowestTime || LowestTime == 0)
                     {
                         LowestTime = TimeNeeded;

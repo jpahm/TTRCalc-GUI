@@ -49,6 +49,9 @@
   <PropertyGroup>
     <ManifestKeyFile>TTRCalc-GUI_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\calc_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -123,6 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Bossbot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\calc_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
