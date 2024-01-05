@@ -14,19 +14,6 @@ namespace TTRCalc_GUI
         public double TimeFactor { get; set; }
     } 
 
-    struct FacilityItem
-    {
-        public uint Count { get; set; }
-        public FacilityRoute Route { get; set; }
-        public string PluralizedName
-        {
-            get
-            {
-                return $"{Route.Name}{(Count > 1 ? "s" : string.Empty)}";
-            }
-        }
-    }
-
     class Calculator
     {
         private MainWindow CalculatorWindow;
@@ -76,7 +63,7 @@ namespace TTRCalc_GUI
         }
 
         // Function for calculating and listing the suggested route
-        public List<FacilityItem> CalculateList(uint PointsNeeded)
+        public Dictionary<FacilityRoute, uint> CalculateList(uint PointsNeeded)
         {
             FacilityRoute[] PointSources = FacilityRoutes[CalculatorWindow.SelectedFacility];
 
@@ -89,8 +76,8 @@ namespace TTRCalc_GUI
                     PointSources[0] = new FacilityRoute() { Name = "Long", Points = 776, TimeFactor = 1.5 };
             }
 
-            List<FacilityItem> OptimalRoute = new List<FacilityItem>();
-            CalculateMostEfficientRoute(PointSources, PointsNeeded, new List<FacilityItem>(), ref OptimalRoute);
+            Dictionary<FacilityRoute, uint> OptimalRoute = new Dictionary<FacilityRoute, uint>();
+            CalculateMostEfficientRoute(PointSources, PointsNeeded, new Dictionary<FacilityRoute, uint>(), ref OptimalRoute);
 
             return OptimalRoute;
         }
@@ -98,25 +85,35 @@ namespace TTRCalc_GUI
         // The actual recursive function for calculating the route
         // **NOTE: I'm well aware that this doesn't need to be calculated recursively, and could instead take
         // advantage of a multitude of convenient (more efficient) shortcuts... I wanted to do it this way anyways :)
-        private void CalculateMostEfficientRoute(FacilityRoute[] Routes, uint PointsNeeded, List<FacilityItem> CurrentRoute, ref List<FacilityItem> OptimalRoute)
+        private void CalculateMostEfficientRoute(FacilityRoute[] Routes, uint PointsNeeded, Dictionary<FacilityRoute, uint> CurrentRoute, ref Dictionary<FacilityRoute, uint> OptimalRoute)
         {
-            // Look through all possible routes to find most efficient route for this step
+            // Make sure we stop recursing if no more points are needed
+            if (PointsNeeded <= 0)
+            {
+                OptimalRoute = CurrentRoute;
+                return;
+            }
+
+            // Look through all possible routes to find most efficient route for this recursive iteration
             for (int i = 0; i < Routes.Length; ++i)
             {
                 // The specific facility route being considered at this step
                 FacilityRoute route = Routes[i];
                 
                 // Make temporary var for the route being considered, based on the current route
-                List<FacilityItem> tempRoute = new List<FacilityItem>(CurrentRoute);
+                Dictionary<FacilityRoute, uint> tempRoute = new Dictionary<FacilityRoute, uint>(CurrentRoute);
                 
                 // Figure out how many times we can do this route without exceeding needed points, with at least 1
                 uint numNeeded = Math.Max(1, (uint)Math.Floor((double)PointsNeeded / route.Points));
                 
                 // Calculate how many points still need to be earned after this
                 int pointsRemaining = (int)(PointsNeeded - (numNeeded * route.Points));
-                
+
                 // Add this calc to the temp route
-                tempRoute.Add(new FacilityItem() { Count = numNeeded, Route = route });
+                if (tempRoute.ContainsKey(route))
+                    tempRoute[route] += numNeeded;
+                else
+                    tempRoute[route] = numNeeded;
 
                 if (pointsRemaining > 0)
                 {
@@ -125,9 +122,9 @@ namespace TTRCalc_GUI
                 } else
                 {
                     // Calculate the time cost of the current finished route
-                    double timeCost = tempRoute.Sum(x => x.Route.TimeFactor * x.Count);
+                    double timeCost = tempRoute.Sum(x => x.Key.TimeFactor * x.Value);
                     // Calculate the time cost of the current optimal route
-                    double optimalTimeCost = OptimalRoute.Sum(x => x.Route.TimeFactor * x.Count);
+                    double optimalTimeCost = OptimalRoute.Sum(x => x.Key.TimeFactor * x.Value);
                     // Compare and set new optimal route if current route is better
                     if (OptimalRoute.Count == 0 || timeCost < optimalTimeCost)
                         OptimalRoute = tempRoute;

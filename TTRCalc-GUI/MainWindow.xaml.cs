@@ -61,7 +61,9 @@ namespace TTRCalc_GUI
                 NeededPoints = 0;
             if (CurrentPoints > NeededPoints)
                 return;
-            OutputList.ItemsSource = calc.CalculateList(NeededPoints - CurrentPoints);
+            OutputList.ItemsSource = calc.CalculateList(NeededPoints - CurrentPoints).Select(x =>
+                new { Count = x.Value, Name = $"{x.Key.Name}{(x.Value > 1 ? "s" : string.Empty)}" }
+            );
         }
 
         private void FacilitySelected(object sender, RoutedEventArgs e)
