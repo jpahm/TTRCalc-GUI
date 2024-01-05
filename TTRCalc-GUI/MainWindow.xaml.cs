@@ -21,7 +21,7 @@ namespace TTRCalc_GUI
     public partial class MainWindow : Window
     {
         // Currently selected facility type
-        FacilityType SelectedFacility = FacilityType.Sellbot;
+        public FacilityType SelectedFacility = FacilityType.Sellbot;
 
         // Point names associated w/ facilities
         private static Dictionary<FacilityType, string> PointTypes = new Dictionary<FacilityType, string>()
@@ -52,7 +52,7 @@ namespace TTRCalc_GUI
         {
             if (MediumFactoryBox == null || ShortsPreferredBox == null)
                 return;
-            Calculator calc = new Calculator(SelectedFacility, MediumFactoryBox.IsChecked ?? false, ShortsPreferredBox.IsChecked ?? false);
+            Calculator calc = new Calculator(this);
             uint CurrentPoints;
             uint NeededPoints;
             if (!uint.TryParse(CurrentPointsBox.Text, out CurrentPoints))

@@ -65,7 +65,7 @@
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn Header="#" DisplayMemberBinding="{Binding Count}" Width="50"/>
-                    <GridViewColumn Header="Facility Type" DisplayMemberBinding="{Binding FacilityName}" Width="130"/>
+                    <GridViewColumn Header="Facility Type" DisplayMemberBinding="{Binding PluralizedName}" Width="130"/>
                 </GridView>
             </ListView.View>
         </ListView>
