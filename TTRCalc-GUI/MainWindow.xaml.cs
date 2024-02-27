@@ -20,8 +20,8 @@ namespace TTRCalc_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Currently selected facility type
-        FacilityType SelectedFacility = FacilityType.Sellbot;
+        // The calculator being used
+        Calculator calculator = new Calculator();
 
         // Point names associated w/ facilities
         private static Dictionary<FacilityType, string> PointTypes = new Dictionary<FacilityType, string>()
@@ -50,9 +50,8 @@ namespace TTRCalc_GUI
 
         private void DoCalculation()
         {
-            if (MediumFactoryBox == null || ShortsPreferredBox == null)
+            if (ShortsPreferredBox is null)
                 return;
-            Calculator calc = new Calculator(SelectedFacility, MediumFactoryBox.IsChecked ?? false, ShortsPreferredBox.IsChecked ?? false);
             uint CurrentPoints;
             uint NeededPoints;
             if (!uint.TryParse(CurrentPointsBox.Text, out CurrentPoints))
@@ -61,7 +60,7 @@ namespace TTRCalc_GUI
                 NeededPoints = 0;
             if (CurrentPoints > NeededPoints)
                 return;
-            OutputList.ItemsSource = calc.CalculateList(NeededPoints - CurrentPoints);
+            OutputList.ItemsSource = calculator.CalculateList(NeededPoints - CurrentPoints);
         }
 
         private void FacilitySelected(object sender, RoutedEventArgs e)
@@ -70,31 +69,29 @@ namespace TTRCalc_GUI
             switch (FacilityButton.Name)
             {
                 case "SellbotButton":
-                    SelectedFacility = FacilityType.Sellbot;
+                    calculator.SelectedFacilityType = FacilityType.Sellbot;
                     break;
                 case "CashbotButton":
-                    SelectedFacility = FacilityType.Cashbot;
+                    calculator.SelectedFacilityType = FacilityType.Cashbot;
                     break;
                 case "LawbotButton":
-                    SelectedFacility = FacilityType.Lawbot;
+                    calculator.SelectedFacilityType = FacilityType.Lawbot;
                     break;
                 case "BossbotButton":
-                    SelectedFacility = FacilityType.Bossbot;
+                    calculator.SelectedFacilityType = FacilityType.Bossbot;
                     break;
             }
             if (NeededPointsBox == null)
                 return;
-            if (SelectedFacility != FacilityType.Sellbot)
+            if (calculator.SelectedFacilityType != FacilityType.Sellbot)
             {
-                MediumFactoryBox.Visibility = Visibility.Hidden;
                 ShortsPreferredBox.Visibility = Visibility.Hidden;
             }
             else
             {
-                MediumFactoryBox.Visibility = Visibility.Visible;
                 ShortsPreferredBox.Visibility = Visibility.Visible;
             }
-            string PointType = PointTypes[SelectedFacility];
+            string PointType = PointTypes[calculator.SelectedFacilityType];
             NeededPointsBox.Text = "";
             NeededPointsText.Text = $"How many {PointType} do you need?";
             CurrentPointsBox.Text = "0";

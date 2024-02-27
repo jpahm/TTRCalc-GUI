@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib" x:Class="TTRCalc_GUI.MainWindow"
         mc:Ignorable="d"
-        Title="Sysroot's TTR Suit Point Calculator" Height="355" Width="635" ResizeMode="CanMinimize" Topmost="True" SizeToContent="Height" Background="#FF3C3C3C">
+        Title="TTR Suit Point Calculator" Height="355" Width="635" ResizeMode="CanMinimize" Topmost="True" SizeToContent="Height" Background="#FF3C3C3C">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -61,7 +61,7 @@
         </Grid>
         <TextBox x:Name="CurrentPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="44,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1" Text="0" GotFocus="TextBox_GotFocus" PreviewMouseDown="TextBox_PreviewMouseDown" TextChanged="Box_TextChanged"/>
         <Label Grid.Column="2" Content="You should do:" HorizontalAlignment="Center" Margin="5,32,0,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontSize="20"/>
-        <ListView x:Name="OutputList" Grid.Column="2" Margin="22,74,17,0" d:ItemsSource="{d:SampleData ItemCount=5}" Height="250" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFE2E2E2" IsEnabled="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView x:Name="OutputList" Grid.Column="2" Margin="12,73,13,0" d:ItemsSource="{d:SampleData ItemCount=5}" Height="250" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFE2E2E2" IsEnabled="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="180">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn Header="#" DisplayMemberBinding="{Binding Count}" Width="50"/>
@@ -69,7 +69,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <CheckBox x:Name="MediumFactoryBox" Grid.Column="1" Content="Medium factories allowed?" HorizontalAlignment="Left" Height="19" Margin="28,240,0,0" VerticalAlignment="Top" Width="177" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible" Click="Box_Clicked"/>
-        <CheckBox x:Name="ShortsPreferredBox" Grid.Column="1" Content="Shorts preferred?" HorizontalAlignment="Left" Height="19" Margin="28,269,0,0" VerticalAlignment="Top" Width="177" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible" Click="Box_Clicked"/>
+        <CheckBox x:Name="ShortsPreferredBox" Grid.Column="1" Content="Prefer short factories" Height="19" Margin="44,240,8,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible" Click="Box_Clicked" RenderTransformOrigin="0.655,0.792"/>
     </Grid>
 </Window>
