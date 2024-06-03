@@ -50,48 +50,47 @@ namespace TTRCalc_GUI
     {
         public FacilityType SelectedFacilityType { get; set; }
         public bool ShortsPreferred { get; set; }
-
-        public Calculator() { }
+        public bool IncludeBuildings { get; set; }
 
         // Point values associated w/ Cog HQ facilities; dependent on type
-        private Dictionary<FacilityType, Facility[]> HQFacilityValues = new Dictionary<FacilityType, Facility[]>()
+        private readonly Dictionary<FacilityType, Facility[]> HQFacilityValues = new Dictionary<FacilityType, Facility[]>()
         {
             // Since Under New Management, all facility payout values and times are now averages
             {
                 // TODO: Update sellbot for UNM
                 FacilityType.Sellbot,
                 new Facility[] {
-                    new Facility("Long Steel Factory", 776, TimeSpan.FromSeconds(1)),
-                    new Facility("Short Steel Factory", 480, TimeSpan.FromSeconds(1)),
-                    new Facility("Long Scrap Factory", 776, TimeSpan.FromSeconds(1)),
-                    new Facility("Short Scrap Factory", 480, TimeSpan.FromSeconds(1))
+                    new Facility("Long Steel Factory", 1549, TimeSpan.FromSeconds(700)),
+                    new Facility("Short Steel Factory", 992, TimeSpan.FromSeconds(500)),
+                    new Facility("Long Scrap Factory", 629, TimeSpan.FromSeconds(600)),
+                    new Facility("Short Scrap Factory", 403, TimeSpan.FromSeconds(400))
                 }
             },
             {
                 FacilityType.Cashbot,
                 new Facility[] {
                     new Facility("Bullion Mint", 1700, TimeSpan.FromSeconds(900)),
-                    new Facility("Coin Mint", 780, TimeSpan.FromSeconds(720))
+                    new Facility("Coin Mint", 735, TimeSpan.FromSeconds(720))
                 }
             },
             {
                 FacilityType.Lawbot,
                 new Facility[] {
-                    new Facility("Senior Wing", 1800, TimeSpan.FromSeconds(1260)),
-                    new Facility("Junior Wing", 910, TimeSpan.FromSeconds(860)),
+                    new Facility("Senior Wing", 1950, TimeSpan.FromSeconds(1260)),
+                    new Facility("Junior Wing", 808, TimeSpan.FromSeconds(860)),
                 }
             },
             {
                 FacilityType.Bossbot,
                 new Facility[] {
-                    new Facility("Final Fringe", 1900, TimeSpan.FromSeconds(1980)),
-                    new Facility("First Fairway", 990, TimeSpan.FromSeconds(1200)),
+                    new Facility("Final Fringe", 2240, TimeSpan.FromSeconds(1980)),
+                    new Facility("First Fairway", 925, TimeSpan.FromSeconds(1200)),
                 }
             }
         };
 
         // Values for cog buildings; independent of type
-        private List<Facility> BuildingValues = new List<Facility>()
+        private readonly Facility[] BuildingValues =
         {
             new Facility("Max 5 Story Bldg", 1000, TimeSpan.FromSeconds(440)),
             new Facility("5 Story Bldg", 500, TimeSpan.FromSeconds(360)),
@@ -101,20 +100,28 @@ namespace TTRCalc_GUI
         // Function for calculating and listing the suggested route
         public List<FacilityItem> CalculateList(uint PointsNeeded)
         {
-            Facility[] PointSources = HQFacilityValues[SelectedFacilityType].Concat(BuildingValues).ToArray();
+            Facility[] pointSources = (Facility[])HQFacilityValues[SelectedFacilityType].Clone();
+
+            // Include building values if user specified
+            if (IncludeBuildings)
+                pointSources = pointSources.Concat(BuildingValues).OrderByDescending(x => x.Points).ToArray();
 
             if (SelectedFacilityType == FacilityType.Sellbot)
             {
-                // Adjust longs to be considered more efficient if the user doesn't prefer doing shorts
-                if (!ShortsPreferred)
-                    PointSources[0] = new Facility("Long", 776, TimeSpan.FromSeconds(1));
+                // Adjust shorts to be considered more efficient if the user prefers them
+                if (ShortsPreferred)
+                {
+                    for (int i = 0; i < pointSources.Length; ++i)
+                        if (pointSources[i].Name.Contains("Short"))
+                            pointSources[i].Time = TimeSpan.FromMinutes(pointSources[i].Time.TotalMinutes / 2);
+                }
             }
 
             // TOONFEST: Multiply all source points by 2
             //for (int i = 0; i < PointSources.Length; ++i)
             //PointSources[i].Points *= 2;
 
-            uint[] SourceCounts = CalculateMostEfficientRoute(PointSources, PointsNeeded);
+            uint[] SourceCounts = CalculateMostEfficientRoute(pointSources, PointsNeeded);
 
             List<FacilityItem> Outputs = new List<FacilityItem>();
 
@@ -122,7 +129,7 @@ namespace TTRCalc_GUI
             {
                 if (SourceCounts[i] == 0)
                     continue;
-                Outputs.Add(new FacilityItem(SourceCounts[i], $"{PointSources[i].Name}{(SourceCounts[i] > 1 ? "s" : "")}"));
+                Outputs.Add(new FacilityItem(SourceCounts[i], $"{pointSources[i].Name}{(SourceCounts[i] > 1 ? "s" : "")}"));
             }
             return Outputs;
         }

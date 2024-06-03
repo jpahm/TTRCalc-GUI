@@ -55,11 +55,11 @@
         <Grid Margin="44,71,17,232" Grid.Column="1">
             <TextBlock x:Name="NeededPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you need?" TextWrapping="Wrap" FontWeight="Bold"/>
         </Grid>
-        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="44,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1" TextChanged="Box_TextChanged"/>
+        <TextBox x:Name="NeededPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="44,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1" TextChanged="InputBox_TextChanged"/>
         <Grid Margin="44,147,17,155" Grid.Column="1">
             <TextBlock x:Name="CurrentPointsText" Grid.Column="1" VerticalAlignment="Center" Foreground="#FFE2E2E2" HorizontalAlignment="Stretch" Text="How many Merits do you have?" TextWrapping="Wrap" FontWeight="Bold"/>
         </Grid>
-        <TextBox x:Name="CurrentPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="44,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1" Text="0" GotFocus="TextBox_GotFocus" PreviewMouseDown="TextBox_PreviewMouseDown" TextChanged="Box_TextChanged"/>
+        <TextBox x:Name="CurrentPointsBox" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="44,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" MaxLines="1" Text="0" GotFocus="TextBox_GotFocus" PreviewMouseDown="TextBox_PreviewMouseDown" TextChanged="InputBox_TextChanged"/>
         <Label Grid.Column="2" Content="You should do:" HorizontalAlignment="Center" Margin="5,32,0,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontSize="20"/>
         <ListView x:Name="OutputList" Grid.Column="2" Margin="12,73,13,0" d:ItemsSource="{d:SampleData ItemCount=5}" Height="250" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFE2E2E2" IsEnabled="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="180">
             <ListView.View>
@@ -69,6 +69,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <CheckBox x:Name="ShortsPreferredBox" Grid.Column="1" Content="Prefer short factories" Height="19" Margin="44,240,8,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible" Click="Box_Clicked" RenderTransformOrigin="0.655,0.792"/>
+        <CheckBox x:Name="ShortsPreferredBox" Grid.Column="1" Content="Prefer short factories" Height="19" Margin="44,254,8,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible" RenderTransformOrigin="0.655,0.792" Click="CheckBox_Checked"/>
+        <CheckBox x:Name="IncludeBuildingsBox" Grid.Column="1" Content="Include Buildings" Height="19" Margin="44,224,8,0" VerticalAlignment="Top" Foreground="#FFE2E2E2" FontWeight="Bold" Visibility="Visible" RenderTransformOrigin="0.655,0.792" Click="CheckBox_Checked"/>
     </Grid>
 </Window>

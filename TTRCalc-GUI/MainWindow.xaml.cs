@@ -21,10 +21,10 @@ namespace TTRCalc_GUI
     public partial class MainWindow : Window
     {
         // The calculator being used
-        Calculator calculator = new Calculator();
+        readonly Calculator calculator = new Calculator();
 
         // Point names associated w/ facilities
-        private static Dictionary<FacilityType, string> PointTypes = new Dictionary<FacilityType, string>()
+        private static readonly Dictionary<FacilityType, string> PointTypes = new Dictionary<FacilityType, string>()
         {
             {
                 FacilityType.Sellbot,
@@ -50,16 +50,16 @@ namespace TTRCalc_GUI
 
         private void DoCalculation()
         {
-            if (ShortsPreferredBox is null)
+            if (ShortsPreferredBox is null || IncludeBuildingsBox is null)
                 return;
-            uint CurrentPoints;
-            uint NeededPoints;
-            if (!uint.TryParse(CurrentPointsBox.Text, out CurrentPoints))
+            if (!uint.TryParse(CurrentPointsBox.Text, out uint CurrentPoints))
                 CurrentPoints = 0;
-            if (!uint.TryParse(NeededPointsBox.Text, out NeededPoints))
+            if (!uint.TryParse(NeededPointsBox.Text, out uint NeededPoints))
                 NeededPoints = 0;
             if (CurrentPoints > NeededPoints)
                 return;
+            calculator.ShortsPreferred = ShortsPreferredBox.IsChecked ?? false;
+            calculator.IncludeBuildings = IncludeBuildingsBox.IsChecked ?? false;
             OutputList.ItemsSource = calculator.CalculateList(NeededPoints - CurrentPoints);
         }
 
@@ -91,11 +91,11 @@ namespace TTRCalc_GUI
             {
                 ShortsPreferredBox.Visibility = Visibility.Visible;
             }
-            string PointType = PointTypes[calculator.SelectedFacilityType];
+            string pointType = PointTypes[calculator.SelectedFacilityType];
             NeededPointsBox.Text = "";
-            NeededPointsText.Text = $"How many {PointType} do you need?";
+            NeededPointsText.Text = $"How many {pointType} do you need?";
             CurrentPointsBox.Text = "0";
-            CurrentPointsText.Text = $"How many {PointType} do you have?";
+            CurrentPointsText.Text = $"How many {pointType} do you have?";
         }
 
         void TextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -113,12 +113,12 @@ namespace TTRCalc_GUI
             }
         }
 
-        private void Box_TextChanged(object sender, TextChangedEventArgs e)
+        private void InputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             DoCalculation();
         }
 
-        private void Box_Clicked(object sender, RoutedEventArgs e)
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             DoCalculation();
         }
